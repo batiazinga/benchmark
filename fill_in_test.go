@@ -1,34 +1,36 @@
 package benchmark
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func BenchmarkFillIn(b *testing.B) {
 	// define some sizes
-	hundred := 100
-	tenThousand := 10000
-	million := 1000000
+	sizes := []int{100, 10000, 1000000}
 
 	// sub benchmards
 	// Fill in slices
-	b.Run("slice default 100", func(b *testing.B) { fillInSliceDefault(b, hundred) })
-	b.Run("slice default 10000", func(b *testing.B) { fillInSliceDefault(b, tenThousand) })
-	b.Run("slice default 1000000", func(b *testing.B) { fillInSliceDefault(b, million) })
+	for _, size := range sizes {
+		b.Run(fmt.Sprintf("slice default %v", size), func(b *testing.B) { fillInSliceDefault(b, size) })
+	}
 
-	b.Run("slice capacity 100", func(b *testing.B) { fillInSliceCapacity(b, hundred) })
-	b.Run("slice capacity 10000", func(b *testing.B) { fillInSliceCapacity(b, tenThousand) })
-	b.Run("slice capacity 1000000", func(b *testing.B) { fillInSliceCapacity(b, million) })
+	for _, size := range sizes {
+		b.Run(fmt.Sprintf("slice capacity %v", size), func(b *testing.B) { fillInSliceCapacity(b, size) })
+	}
 
-	b.Run("slice full 100", func(b *testing.B) { fillInSliceFull(b, hundred) })
-	b.Run("slice full 10000", func(b *testing.B) { fillInSliceFull(b, tenThousand) })
-	b.Run("slice full 1000000", func(b *testing.B) { fillInSliceFull(b, million) })
+	for _, size := range sizes {
+		b.Run(fmt.Sprintf("slice full %v", size), func(b *testing.B) { fillInSliceFull(b, size) })
+	}
 
-	b.Run("map default 100", func(b *testing.B) { fillInMapDefault(b, hundred) })
-	b.Run("map default 10000", func(b *testing.B) { fillInMapDefault(b, tenThousand) })
-	b.Run("map default 1000000", func(b *testing.B) { fillInMapDefault(b, million) })
+	for _, size := range sizes {
+		b.Run(fmt.Sprintf("map default %v", size), func(b *testing.B) { fillInMapDefault(b, size) })
+	}
 
-	b.Run("map capacity 100", func(b *testing.B) { fillInMapCapacity(b, hundred) })
-	b.Run("map capacity 10000", func(b *testing.B) { fillInMapCapacity(b, tenThousand) })
-	b.Run("map capacity 1000000", func(b *testing.B) { fillInMapCapacity(b, million) })
+	for _, size := range sizes {
+		b.Run(fmt.Sprintf("map capacity %v", size), func(b *testing.B) { fillInMapCapacity(b, size) })
+
+	}
 }
 
 // sub benchmarks for slices
