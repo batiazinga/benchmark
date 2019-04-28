@@ -1,6 +1,7 @@
 package benchmark
 
 import (
+	"container/list"
 	"fmt"
 	"testing"
 )
@@ -12,6 +13,7 @@ func BenchmarkFillInCreate(b *testing.B) {
 	sizes := []int{10, 100, 1000, 10000}
 
 	// sub benchmards
+	// slices
 	for _, size := range sizes {
 		b.Run(fmt.Sprintf("slice default %v", size), func(b *testing.B) { fillInCreateSliceDefault(b, size) })
 	}
@@ -21,6 +23,14 @@ func BenchmarkFillInCreate(b *testing.B) {
 	for _, size := range sizes {
 		b.Run(fmt.Sprintf("slice full %v", size), func(b *testing.B) { fillInCreateSliceFull(b, size) })
 	}
+	// list
+	for _, size := range sizes {
+		b.Run(fmt.Sprintf("list %v", size), func(b *testing.B) { pushBackList(b, size) })
+	}
+	for _, size := range sizes {
+		b.Run(fmt.Sprintf("list %v", size), func(b *testing.B) { pushFrontList(b, size) })
+	}
+	// maps
 	for _, size := range sizes {
 		b.Run(fmt.Sprintf("map default %v", size), func(b *testing.B) { fillInCreateMapDefault(b, size) })
 	}
@@ -58,6 +68,24 @@ func fillInCreateSliceFull(b *testing.B, size int) {
 		// set values
 		for i := 0; i < size; i++ {
 			slice[i] = i
+		}
+	}
+}
+
+// subbenchmarks for lists
+func pushBackList(b *testing.B, size int) {
+	for n := 0; n < b.N; n++ {
+		l := list.New()
+		for i := 0; i < size; i++ {
+			l.PushBack(i)
+		}
+	}
+}
+func pushFrontList(b *testing.B, size int) {
+	for n := 0; n < b.N; n++ {
+		l := list.New()
+		for i := 0; i < size; i++ {
+			l.PushFront(i)
 		}
 	}
 }
