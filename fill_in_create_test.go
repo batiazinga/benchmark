@@ -5,28 +5,25 @@ import (
 	"testing"
 )
 
+// BenchmarkFillInCreate benchmarks creation + filling of slices and maps
+// with various initializations.
 func BenchmarkFillInCreate(b *testing.B) {
 	// define some sizes
-	sizes := []int{100, 10000}
+	sizes := []int{10, 100, 1000, 10000}
 
 	// sub benchmards
-	// Fill in slices
 	for _, size := range sizes {
 		b.Run(fmt.Sprintf("slice default %v", size), func(b *testing.B) { fillInCreateSliceDefault(b, size) })
 	}
-
 	for _, size := range sizes {
 		b.Run(fmt.Sprintf("slice capacity %v", size), func(b *testing.B) { fillInCreateSliceCapacity(b, size) })
 	}
-
 	for _, size := range sizes {
 		b.Run(fmt.Sprintf("slice full %v", size), func(b *testing.B) { fillInCreateSliceFull(b, size) })
 	}
-
 	for _, size := range sizes {
 		b.Run(fmt.Sprintf("map default %v", size), func(b *testing.B) { fillInCreateMapDefault(b, size) })
 	}
-
 	for _, size := range sizes {
 		b.Run(fmt.Sprintf("map capacity %v", size), func(b *testing.B) { fillInCreateMapCapacity(b, size) })
 
